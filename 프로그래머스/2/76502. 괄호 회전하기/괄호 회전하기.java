@@ -1,31 +1,43 @@
-import java.util.Stack;
+import java.util.*;
+import java.io.*;
 
-public class Solution {
-    static public int solution(String s) {
+class Solution {
+    public int solution(String s) {
         int answer = 0;
-
-        for (int i = 0; i < s.length(); i++) {
+        
+        for (int i=0; i < s.length(); i++) {
+            String n = s.substring(i,s.length()) + s.substring(0,i);
+            //System.out.println(n);
+            
             Stack<Character> stack = new Stack<>();
-            String str = s.substring(i, s.length()) + s.substring(0, i);
-            for (int j = 0; j < str.length(); j++) {
-                char c = str.charAt(j);
-                if (stack.isEmpty()) {
-                    stack.push(c);
-                } else if (c == ')' && stack.peek() == '(') {
+            
+            for (int j=0; j < s.length(); j++) {
+                char t = n.charAt(j);
+                
+                if (stack.size() == 0) {
+                    stack.push(t);
+                }
+                
+                else if (stack.peek() == '(' && t == ')') {
                     stack.pop();
-                } else if (c == '}' && stack.peek() == '{') {
+                }
+                
+                else if (stack.peek() == '{' && t == '}') {
                     stack.pop();
-                } else if (c == ']' && stack.peek() == '[') {
+                }
+                
+                else if (stack.peek() == '[' && t == ']') {
                     stack.pop();
-                } else {
-                    stack.push(c);
+                }
+                
+                else {
+                    stack.push(t);
                 }
             }
-            if (stack.isEmpty()) {
-                answer++;
+            if (stack.size() == 0) {
+                answer += 1;
             }
         }
-
         return answer;
     }
 }
