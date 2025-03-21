@@ -1,14 +1,13 @@
 import java.util.*;
 import java.io.*;
 
-// N = 행(세로 길이), M = 열(가로 길이)
 class Solution {
     
-    static int N,M;
-    // 북, 동, 남, 서
+    // 북 / 동 / 남 / 서
     static int[] dx = {-1,0,1,0};
     static int[] dy = {0,1,0,-1};
     
+    static int N,M;
     static int[][] visited;
     static int[] oil;
     
@@ -24,30 +23,30 @@ class Solution {
         for (int i=0; i < N; i++) {
             for (int j=0; j < M; j++) {
                 if (land[i][j] == 1 && visited[i][j] == 0) {
-                    bfs(land, visited, i, j);
+                    bfs(i,j,land);
                 }
             }
         }
-        
-        answer = Arrays.stream(oil).max().getAsInt();
+        for (int value : oil) {
+            answer = Math.max(answer,value);
+        }
         
         return answer;
     }
     
-    public void bfs(int[][] land, int[][] visited, int x, int y) {
+    public void bfs(int x, int y, int[][] land) {
         Queue<int[]> q = new LinkedList<>();
-        q.add(new int[]{x,y});
-        visited[x][y] = 1;
-        int count = 1;
+        Set<Integer> set = new HashSet<>();
+        int cnt = 1;
         
-        Set<Integer> s = new HashSet<>();
+        visited[x][y] = 1;
+        q.add(new int[]{x,y});
         
         while (!q.isEmpty()) {
-            int[] now = q.poll();
-            int sx = now[0];
-            int sy = now[1];
-            
-            s.add(sy);
+            int[] s = q.poll();
+            int sx = s[0];
+            int sy = s[1];
+            set.add(sy);
             
             for (int d=0; d < 4; d++) {
                 int nx = sx + dx[d];
@@ -56,15 +55,15 @@ class Solution {
                 if (nx >= 0 && nx < N && ny >= 0 && ny < M) {
                     if (visited[nx][ny] == 0 && land[nx][ny] == 1) {
                         visited[nx][ny] = 1;
-                        q.add(new int[]{nx,ny});
-                        count += 1;
-                        s.add(ny);
+                        cnt += 1;
+                        q.add(new int[]{nx,ny});                        
                     }
                 }
-            }
+            }    
         }
-        for (int idx : s) {
-            oil[idx] += count;
+        
+        for (int v : set) {
+            oil[v] += cnt;
         }
     }
 }
