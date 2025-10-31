@@ -8,7 +8,7 @@ def BFS(start, graph, visited, link_board) :
     while q :
         s = q.popleft()
         for adj in graph[s] : 
-            if visited[adj] == 0 and link_board[start][adj] :
+            if visited[adj] == 0 and link_board[start][adj] == 1 :
                 q.append(adj)
                 visited[adj] = 1
                 cnt += 1
